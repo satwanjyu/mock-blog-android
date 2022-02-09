@@ -1,16 +1,17 @@
 package com.satwanjyu.blog_android.data.remote
 
 import com.satwanjyu.blog_android.data.Post
+import com.satwanjyu.blog_android.data.PostRemoteDataSource
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import retrofit2.http.GET
 import javax.inject.Inject
 
-class PostRemoteDataSource @Inject constructor(
+class RetrofitPostRemoteDataSource @Inject constructor(
     private val postApi: PostApi
-) {
-    val remotePosts: Flow<List<Post>> = flow {
+) : PostRemoteDataSource {
+    override val remotePosts: Flow<List<Post>> = flow {
         while (true) {
             val remotePosts = postApi.getPosts().map { it.toPost() }
             emit(remotePosts)
