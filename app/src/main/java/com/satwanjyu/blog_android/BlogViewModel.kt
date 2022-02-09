@@ -25,6 +25,9 @@ class BlogViewModel @Inject constructor(
                 _uiState.value = PostsUiState.Success(it)
             }
         }
+        viewModelScope.launch {
+            postRepository.updatePosts()
+        }
     }
 }
 

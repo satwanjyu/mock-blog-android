@@ -6,8 +6,8 @@ import com.satwanjyu.blog_android.data.Post
 
 @Entity(tableName = "posts")
 data class PostEntity(
-    @PrimaryKey val id: String,
+    @PrimaryKey val id: Int,
     val content: String
 ) {
-    fun toPost() = Post(id, content)
+    fun toPost() = Post(id.toString(), content)
 }

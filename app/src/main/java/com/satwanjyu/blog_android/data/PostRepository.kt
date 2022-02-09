@@ -1,16 +1,22 @@
 package com.satwanjyu.blog_android.data
 
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.collect
 import javax.inject.Inject
 
 class PostRepository @Inject constructor(
-    retrofitPostRemoteDataSource: PostRemoteDataSource,
-    roomPostLocalDataSource: PostLocalDataSource
+    val retrofitPostRemoteDataSource: PostRemoteDataSource,
+    val roomPostLocalDataSource: PostLocalDataSource
 ) {
 
-    val posts: Flow<List<Post>> = retrofitPostRemoteDataSource.remotePosts
-        .onEach { roomPostLocalDataSource.setPosts(it) }
+    val posts: Flow<List<Post>> = roomPostLocalDataSource.localPosts
+
+    suspend fun updatePosts() {
+        retrofitPostRemoteDataSource.remotePosts.collect { posts ->
+            roomPostLocalDataSource.deletePostsFrom(posts.size)
+            roomPostLocalDataSource.setPosts(posts)
+        }
+    }
 }
 
 interface PostRemoteDataSource {
@@ -20,4 +26,5 @@ interface PostRemoteDataSource {
 interface PostLocalDataSource {
     val localPosts: Flow<List<Post>>
     suspend fun setPosts(posts: List<Post>)
+    suspend fun deletePostsFrom(size: Int)
 }

@@ -18,7 +18,11 @@ class RoomPostLocalDataSource @Inject constructor(
 
     override suspend fun setPosts(posts: List<Post>) {
         Log.d("BlogLocalDataSource", "Database insert")
-        val postEntities = posts.map { PostEntity(it.id, it.content) }
+        val postEntities = posts.map { PostEntity(it.id.toInt(), it.content) }
         postDao.setPosts(postEntities)
+    }
+
+    override suspend fun deletePostsFrom(size: Int) {
+        postDao.deletePostsFrom(size)
     }
 }
