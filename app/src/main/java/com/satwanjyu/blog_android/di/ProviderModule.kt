@@ -2,8 +2,8 @@ package com.satwanjyu.blog_android.di
 
 import android.content.Context
 import androidx.room.Room
-import com.satwanjyu.blog_android.data.local.PostDao
-import com.satwanjyu.blog_android.data.local.PostDb
+import com.satwanjyu.blog_android.data.local.room.PostDao
+import com.satwanjyu.blog_android.data.local.room.PostDb
 import com.satwanjyu.blog_android.data.remote.PostApi
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory

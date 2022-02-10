@@ -1,4 +1,4 @@
-package com.satwanjyu.blog_android.data.local
+package com.satwanjyu.blog_android.data.local.room
 
 import androidx.room.Dao
 import androidx.room.Insert

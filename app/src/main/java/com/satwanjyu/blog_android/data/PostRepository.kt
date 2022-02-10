@@ -13,7 +13,6 @@ class PostRepository @Inject constructor(
 
     suspend fun updatePosts() {
         retrofitPostRemoteDataSource.remotePosts.collect { posts ->
-            roomPostLocalDataSource.deletePostsFrom(posts.size)
             roomPostLocalDataSource.setPosts(posts)
         }
     }
@@ -26,5 +25,4 @@ interface PostRemoteDataSource {
 interface PostLocalDataSource {
     val localPosts: Flow<List<Post>>
     suspend fun setPosts(posts: List<Post>)
-    suspend fun deletePostsFrom(size: Int)
 }

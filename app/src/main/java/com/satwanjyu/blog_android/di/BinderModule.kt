@@ -2,7 +2,7 @@ package com.satwanjyu.blog_android.di
 
 import com.satwanjyu.blog_android.data.PostLocalDataSource
 import com.satwanjyu.blog_android.data.PostRemoteDataSource
-import com.satwanjyu.blog_android.data.local.RoomPostLocalDataSource
+import com.satwanjyu.blog_android.data.local.room.RoomPostLocalDataSource
 import com.satwanjyu.blog_android.data.remote.RetrofitPostRemoteDataSource
 import dagger.Binds
 import dagger.Module

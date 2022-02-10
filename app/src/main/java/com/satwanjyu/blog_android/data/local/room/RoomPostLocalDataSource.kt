@@ -1,4 +1,4 @@
-package com.satwanjyu.blog_android.data.local
+package com.satwanjyu.blog_android.data.local.room
 
 import android.util.Log
 import com.satwanjyu.blog_android.data.Post
@@ -19,10 +19,7 @@ class RoomPostLocalDataSource @Inject constructor(
     override suspend fun setPosts(posts: List<Post>) {
         Log.d("BlogLocalDataSource", "Database insert")
         val postEntities = posts.map { PostEntity(it.id.toInt(), it.content) }
+        postDao.deletePostsFrom(postEntities.size)
         postDao.setPosts(postEntities)
-    }
-
-    override suspend fun deletePostsFrom(size: Int) {
-        postDao.deletePostsFrom(size)
     }
 }
