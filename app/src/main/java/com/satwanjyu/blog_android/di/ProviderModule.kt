@@ -1,7 +1,11 @@
 package com.satwanjyu.blog_android.di
 
 import android.content.Context
+import android.util.Log
 import androidx.room.Room
+import com.satwanjyu.blog_android.BuildConfig
+import com.satwanjyu.blog_android.data.local.objectbox.MyObjectBox
+import com.satwanjyu.blog_android.data.local.objectbox.PostEntity
 import com.satwanjyu.blog_android.data.local.room.PostDao
 import com.satwanjyu.blog_android.data.local.room.PostDb
 import com.satwanjyu.blog_android.data.remote.PostApi
@@ -12,6 +16,9 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import io.objectbox.Box
+import io.objectbox.BoxStore
+import io.objectbox.android.AndroidObjectBrowser
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import javax.inject.Singleton
@@ -54,5 +61,27 @@ object ProviderModule {
     @Provides
     fun providePostDao(postDb: PostDb): PostDao {
         return postDb.postDao()
+    }
+
+    @Singleton
+    @Provides
+    fun provideObjectBoxStore(@ApplicationContext context: Context): BoxStore {
+        val store = MyObjectBox.builder()
+            .androidContext(context)
+            .build()
+
+        // object browser
+        if (BuildConfig.DEBUG) {
+            val started = AndroidObjectBrowser(store).start(context)
+            Log.i("ObjectBrowser", "Started: $started")
+        }
+
+        return store
+    }
+
+    @Singleton
+    @Provides
+    fun providePostBox(boxStore: BoxStore): Box<PostEntity> {
+        return boxStore.boxFor(PostEntity::class.java)
     }
 }

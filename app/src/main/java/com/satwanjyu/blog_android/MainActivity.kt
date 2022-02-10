@@ -69,6 +69,7 @@ fun PostList(posts: List<Post>) {
     Log.d("BlogMainActivity", "PostList recomposition")
     LazyColumn {
         items(posts) { post ->
+            Text(text = post.id, modifier = Modifier.padding())
             Text(text = post.content, modifier = Modifier.padding())
             Divider()
         }

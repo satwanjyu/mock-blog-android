@@ -68,7 +68,6 @@ dependencies {
     kapt("androidx.room:room-compiler:$roomVersion")
     implementation("androidx.room:room-ktx:$roomVersion")
 
-
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation "androidx.compose.ui:ui:1.2.0-alpha02"
     implementation "androidx.compose.material:material:1.2.0-alpha02"
@@ -81,7 +80,13 @@ dependencies {
     androidTestImplementation "androidx.compose.ui:ui-test-junit4:1.2.0-alpha02"
     debugImplementation "androidx.compose.ui:ui-tooling:1.2.0-alpha02"
     debugImplementation "androidx.compose.ui:ui-test-manifest:1.2.0-alpha02"
+
+    // objectbrowser
+    debugImplementation("io.objectbox:objectbox-android-objectbrowser:$objectboxVersion")
+    releaseImplementation("io.objectbox:objectbox-android:$objectboxVersion")
 }
+
+apply plugin: "io.objectbox"
 
 kapt {
     correctErrorTypes true
