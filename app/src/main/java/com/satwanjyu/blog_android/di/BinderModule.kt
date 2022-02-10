@@ -17,12 +17,12 @@ abstract class BinderModule {
     @Singleton
     @Binds
     abstract fun bindPostRemoteDataSource(
-        retrofitPostRemoteDataSource: RetrofitPostRemoteDataSource
+        postRemoteDataSource: RetrofitPostRemoteDataSource
     ): PostRemoteDataSource
 
     @Singleton
     @Binds
     abstract fun bindPostLocalDataSource(
-        roomPostLocalDataSource: RoomPostLocalDataSource
+        postLocalDataSource: RoomPostLocalDataSource
     ): PostLocalDataSource
 }
