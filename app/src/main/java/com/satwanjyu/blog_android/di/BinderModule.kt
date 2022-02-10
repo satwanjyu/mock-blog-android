@@ -3,7 +3,7 @@ package com.satwanjyu.blog_android.di
 import com.satwanjyu.blog_android.data.PostLocalDataSource
 import com.satwanjyu.blog_android.data.PostRemoteDataSource
 import com.satwanjyu.blog_android.data.local.objectbox.ObjectBoxPostLocalDataSource
-import com.satwanjyu.blog_android.data.remote.RetrofitPostRemoteDataSource
+import com.satwanjyu.blog_android.data.remote.ktor.KtorPostRemoteDataSource
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -17,7 +17,7 @@ abstract class BinderModule {
     @Singleton
     @Binds
     abstract fun bindPostRemoteDataSource(
-        postRemoteDataSource: RetrofitPostRemoteDataSource
+        postRemoteDataSource: KtorPostRemoteDataSource
     ): PostRemoteDataSource
 
     @Singleton

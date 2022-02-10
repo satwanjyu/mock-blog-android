@@ -16,6 +16,10 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import io.ktor.client.*
+import io.ktor.client.engine.android.*
+import io.ktor.client.plugins.*
+import io.ktor.serialization.kotlinx.json.*
 import io.objectbox.Box
 import io.objectbox.BoxStore
 import io.objectbox.android.AndroidObjectBrowser
@@ -75,7 +79,6 @@ object ProviderModule {
             val started = AndroidObjectBrowser(store).start(context)
             Log.i("ObjectBrowser", "Started: $started")
         }
-
         return store
     }
 
@@ -83,5 +86,15 @@ object ProviderModule {
     @Provides
     fun providePostBox(boxStore: BoxStore): Box<PostEntity> {
         return boxStore.boxFor(PostEntity::class.java)
+    }
+
+    @Singleton
+    @Provides
+    fun provideHttpClient(): HttpClient {
+        return HttpClient(Android) {
+            install(ContentNegotiation) {
+                json()
+            }
+        }
     }
 }
