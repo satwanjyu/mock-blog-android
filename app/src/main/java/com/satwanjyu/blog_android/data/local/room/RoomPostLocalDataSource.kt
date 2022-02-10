@@ -10,7 +10,7 @@ import javax.inject.Inject
 class RoomPostLocalDataSource @Inject constructor(
     private val postDao: PostDao
 ) : PostLocalDataSource {
-    override val localPosts: Flow<List<Post>> = postDao.getPosts().map { entities ->
+    override fun getPosts(): Flow<List<Post>> = postDao.getPosts().map { entities ->
         entities.map { entity ->
             entity.toPost()
         }

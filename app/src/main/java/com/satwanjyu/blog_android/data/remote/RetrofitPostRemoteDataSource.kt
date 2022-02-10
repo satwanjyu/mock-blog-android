@@ -11,7 +11,7 @@ import javax.inject.Inject
 class RetrofitPostRemoteDataSource @Inject constructor(
     private val postApi: PostApi
 ) : PostRemoteDataSource {
-    override val remotePosts: Flow<List<Post>> = flow {
+    override fun getPosts(): Flow<List<Post>> = flow {
         while (true) {
             val remotePosts = postApi.getPosts().map { it.toPost() }
             emit(remotePosts)

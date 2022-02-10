@@ -5,24 +5,24 @@ import kotlinx.coroutines.flow.collect
 import javax.inject.Inject
 
 class PostRepository @Inject constructor(
-    val retrofitPostRemoteDataSource: PostRemoteDataSource,
-    val roomPostLocalDataSource: PostLocalDataSource
+    private val retrofitPostRemoteDataSource: PostRemoteDataSource,
+    private val roomPostLocalDataSource: PostLocalDataSource
 ) {
 
-    val posts: Flow<List<Post>> = roomPostLocalDataSource.localPosts
+    val posts: Flow<List<Post>> = roomPostLocalDataSource.getPosts()
 
     suspend fun updatePosts() {
-        retrofitPostRemoteDataSource.remotePosts.collect { posts ->
+        retrofitPostRemoteDataSource.getPosts().collect { posts ->
             roomPostLocalDataSource.setPosts(posts)
         }
     }
 }
 
 interface PostRemoteDataSource {
-    val remotePosts: Flow<List<Post>>
+    fun getPosts(): Flow<List<Post>>
 }
 
 interface PostLocalDataSource {
-    val localPosts: Flow<List<Post>>
+    fun getPosts(): Flow<List<Post>>
     suspend fun setPosts(posts: List<Post>)
 }
