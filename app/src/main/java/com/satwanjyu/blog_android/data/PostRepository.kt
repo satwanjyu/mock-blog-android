@@ -30,5 +30,4 @@ interface PostRemoteDataSource {
 interface PostLocalDataSource {
     fun getPosts(): Flow<List<Post>>
     suspend fun setPosts(posts: List<Post>)
-    suspend fun insertPost(content: String)
 }

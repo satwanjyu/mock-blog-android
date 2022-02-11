@@ -1,6 +1,5 @@
 package com.satwanjyu.blog_android.data.local.room
 
-import android.util.Log
 import com.satwanjyu.blog_android.data.Post
 import com.satwanjyu.blog_android.data.PostLocalDataSource
 import kotlinx.coroutines.flow.Flow
@@ -17,13 +16,8 @@ class RoomPostLocalDataSource @Inject constructor(
     }
 
     override suspend fun setPosts(posts: List<Post>) {
-        Log.d("BlogRoomDataSource", "Database insert")
         val postEntities = posts.map { PostEntity(it.id.toInt(), it.content) }
         postDao.deletePostsFrom(postEntities.size)
         postDao.setPosts(postEntities)
-    }
-
-    override suspend fun insertPost(content: String) {
-        TODO("Not yet implemented")
     }
 }
