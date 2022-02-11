@@ -22,4 +22,8 @@ class RoomPostLocalDataSource @Inject constructor(
         postDao.deletePostsFrom(postEntities.size)
         postDao.setPosts(postEntities)
     }
+
+    override suspend fun insertPost(content: String) {
+        TODO("Not yet implemented")
+    }
 }

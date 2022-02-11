@@ -5,8 +5,8 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class PostDto(
-    val id: String,
+    val id: String?,
     val content: String,
 ) {
-    fun toPost() = Post(id, content)
+    fun toPost() = Post(id!!, content)
 }

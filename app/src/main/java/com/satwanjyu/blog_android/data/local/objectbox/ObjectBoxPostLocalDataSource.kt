@@ -34,4 +34,8 @@ class ObjectBoxPostLocalDataSource @Inject constructor(
         }
         postEntityBox.put(postEntities)
     }
+
+    override suspend fun insertPost(content: String) {
+        postEntityBox.put(PostEntity(0, content))
+    }
 }

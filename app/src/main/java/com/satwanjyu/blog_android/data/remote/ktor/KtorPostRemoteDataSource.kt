@@ -6,6 +6,7 @@ import com.satwanjyu.blog_android.data.remote.PostDto
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.request.*
+import io.ktor.http.*
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -25,6 +26,13 @@ class KtorPostRemoteDataSource @Inject constructor(
                 emit(posts)
                 delay(5000L)
             }
+        }
+    }
+
+    override suspend fun postPost(content: String) {
+        client.post(BASE_URL + "posts") {
+            contentType(ContentType.Application.Json)
+            setBody(PostDto(null, content))
         }
     }
 

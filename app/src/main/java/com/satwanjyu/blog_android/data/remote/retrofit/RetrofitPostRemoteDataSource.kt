@@ -18,6 +18,10 @@ class RetrofitPostRemoteDataSource @Inject constructor(
             delay(5000L)
         }
     }
+
+    override suspend fun postPost(content: String) {
+        TODO("Not yet implemented")
+    }
 }
 
 interface PostApi {
