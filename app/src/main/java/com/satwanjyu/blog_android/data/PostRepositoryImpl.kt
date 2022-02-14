@@ -1,23 +1,24 @@
 package com.satwanjyu.blog_android.data
 
+import com.satwanjyu.blog_android.PostRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import javax.inject.Inject
 
-class PostRepository @Inject constructor(
+class PostRepositoryImpl @Inject constructor(
     private val postRemoteDataSource: PostRemoteDataSource,
     private val postLocalDataSource: PostLocalDataSource
-) {
+) : PostRepository {
 
-    val posts: Flow<List<Post>> = postLocalDataSource.getPosts()
+    override val posts: Flow<List<Post>> = postLocalDataSource.getPosts()
 
-    suspend fun updatePosts() {
+    override suspend fun updatePosts() {
         postRemoteDataSource.getPosts().collect { posts ->
             postLocalDataSource.setPosts(posts)
         }
     }
 
-    suspend fun insertPost(content: String) {
+    override suspend fun insertPost(content: String) {
         postRemoteDataSource.postPost(content)
     }
 }
