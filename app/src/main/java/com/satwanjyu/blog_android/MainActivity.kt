@@ -32,7 +32,7 @@ class MainActivity : ComponentActivity() {
 
     private val blogViewModel: BlogViewModel by viewModels()
 
-    private val uiState = mutableStateOf<PostsUiState>(PostsUiState.Success(emptyList(), { }))
+    private val uiState = mutableStateOf<PostsUiState>(PostsUiState.Success())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,7 +55,9 @@ class MainActivity : ComponentActivity() {
                     App(
                         uiState = uiState.value,
                         blogViewModel.draft.value,
-                        { blogViewModel.updateDraft(it) })
+                        { blogViewModel.updateDraft(it) },
+                        { blogViewModel.sendDraft(it) }
+                    )
                 }
             }
         }
@@ -63,7 +65,12 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun App(uiState: PostsUiState, draft: String, updateDraft: (String) -> Unit) {
+fun App(
+    uiState: PostsUiState,
+    draft: String,
+    updateDraft: (String) -> Unit,
+    sendDraft: (String) -> Unit
+) {
     val navController = rememberNavController()
 
     NavHost(navController = navController, startDestination = "mainscreen") {
@@ -71,8 +78,7 @@ fun App(uiState: PostsUiState, draft: String, updateDraft: (String) -> Unit) {
             MainScreen(navController = navController, uiState = uiState)
         }
         composable("newpost") {
-            val success = uiState as PostsUiState.Success
-            ComposePost(navController, draft, updateDraft, success.sendDraft)
+            ComposePost(navController, draft, updateDraft, sendDraft)
         }
     }
 }

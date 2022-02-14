@@ -20,8 +20,7 @@ interface PostRepository {
 
 sealed class PostsUiState {
     data class Success(
-        val posts: List<Post>,
-        val sendDraft: (String) -> Unit
+        val posts: List<Post> = emptyList(),
     ) : PostsUiState()
 }
 
@@ -32,10 +31,7 @@ class BlogViewModel @Inject constructor(
 
     val draft = mutableStateOf("")
 
-    private val _uiState = MutableStateFlow(PostsUiState.Success(
-        emptyList(),
-        { sendDraft(it) }
-    ))
+    private val _uiState = MutableStateFlow(PostsUiState.Success())
     val uiState: StateFlow<PostsUiState> = _uiState
 
     init {
@@ -43,7 +39,6 @@ class BlogViewModel @Inject constructor(
             postRepository.posts.collect { posts ->
                 _uiState.value = PostsUiState.Success(
                     posts,
-                    { sendDraft(it) }
                 )
             }
         }
@@ -52,7 +47,7 @@ class BlogViewModel @Inject constructor(
         }
     }
 
-    private fun sendDraft(draft: String) {
+    fun sendDraft(draft: String) {
         viewModelScope.launch {
             postRepository.insertPost(draft)
         }
