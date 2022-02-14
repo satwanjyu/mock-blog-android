@@ -10,7 +10,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
@@ -51,7 +52,10 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    App(uiState = uiState.value)
+                    App(
+                        uiState = uiState.value,
+                        blogViewModel.draft.value,
+                        { blogViewModel.updateDraft(it) })
                 }
             }
         }
@@ -59,7 +63,7 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun App(uiState: PostsUiState) {
+fun App(uiState: PostsUiState, draft: String, updateDraft: (String) -> Unit) {
     val navController = rememberNavController()
 
     NavHost(navController = navController, startDestination = "mainscreen") {
@@ -68,7 +72,7 @@ fun App(uiState: PostsUiState) {
         }
         composable("newpost") {
             val success = uiState as PostsUiState.Success
-            ComposePost(navController, success.sendDraft)
+            ComposePost(navController, draft, updateDraft, success.sendDraft)
         }
     }
 }
@@ -98,13 +102,15 @@ fun PostList(posts: List<Post>) {
 }
 
 @Composable
-fun ComposePost(navController: NavController, send: (String) -> Unit) {
-    var draft by remember {
-        mutableStateOf("")
-    }
+fun ComposePost(
+    navController: NavController,
+    draft: String,
+    updateDraft: (String) -> Unit,
+    send: (String) -> Unit
+) {
 
     Column(modifier = Modifier.padding(8.dp)) {
-        OutlinedTextField(value = draft, onValueChange = { draft = it })
+        OutlinedTextField(value = draft, onValueChange = { updateDraft(it) })
         Button(onClick = {
             send(draft)
             navController.navigate("mainscreen")

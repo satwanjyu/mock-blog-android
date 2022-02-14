@@ -1,5 +1,6 @@
 package com.satwanjyu.blog_android
 
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.satwanjyu.blog_android.data.Post
@@ -29,6 +30,8 @@ class BlogViewModel @Inject constructor(
     private val postRepository: PostRepository
 ) : ViewModel() {
 
+    val draft = mutableStateOf("")
+
     private val _uiState = MutableStateFlow(PostsUiState.Success(
         emptyList(),
         { sendDraft(it) }
@@ -53,5 +56,9 @@ class BlogViewModel @Inject constructor(
         viewModelScope.launch {
             postRepository.insertPost(draft)
         }
+    }
+
+    fun updateDraft(draft: String) {
+        this.draft.value = draft
     }
 }
