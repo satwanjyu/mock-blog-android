@@ -26,7 +26,7 @@ sealed class PostsUiState {
 
 @HiltViewModel
 class BlogViewModel @Inject constructor(
-    private val postRepositoryImpl: PostRepository
+    private val postRepository: PostRepository
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(PostsUiState.Success(
@@ -37,7 +37,7 @@ class BlogViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            postRepositoryImpl.posts.collect { posts ->
+            postRepository.posts.collect { posts ->
                 _uiState.value = PostsUiState.Success(
                     posts,
                     { sendDraft(it) }
@@ -45,13 +45,13 @@ class BlogViewModel @Inject constructor(
             }
         }
         viewModelScope.launch {
-            postRepositoryImpl.updatePosts()
+            postRepository.updatePosts()
         }
     }
 
     private fun sendDraft(draft: String) {
         viewModelScope.launch {
-            postRepositoryImpl.insertPost(draft)
+            postRepository.insertPost(draft)
         }
     }
 }
