@@ -21,13 +21,11 @@ class KtorPostRemoteDataSource @Inject constructor(
         return flow {
             while (true) {
                 try {
-                    emit(Resource.Loading())
                     val postDtos: List<PostDto> = client.get(
                         BASE_URL + "posts"
                     ).body()
                     val posts = postDtos.map { it.toPost() }
                     emit(Resource.Success(posts))
-
                 } catch (e: Exception) {
                     emit(
                         Resource.Error(

@@ -24,7 +24,10 @@ fun Posts(navController: NavController, uiState: PostsUiState) {
         when (uiState) {
             is PostsUiState.Loading -> PostList(posts = uiState.posts, dataState = "Loading")
             is PostsUiState.Success -> PostList(posts = uiState.posts, dataState = "Success")
-            is PostsUiState.Error -> PostList(posts = uiState.posts, dataState = uiState.message)
+            is PostsUiState.Error -> PostList(
+                posts = uiState.posts,
+                dataState = "Error: " + uiState.message
+            )
         }
     }
 }

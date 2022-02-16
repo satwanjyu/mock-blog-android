@@ -17,8 +17,7 @@ class PostRepositoryImpl @Inject constructor(
     }
 
     private var dataState = DataState.OUTDATED
-    private var errorMessage = ""
-
+    private var errorMessage = "Repo error"
 
     override fun getPosts(): Flow<Data<List<Post>>> = postLocalDataSource.getPosts().map { posts ->
         when (dataState) {
@@ -36,7 +35,10 @@ class PostRepositoryImpl @Inject constructor(
                     updateLocalPosts(resource.data)
                     DataState.LIVE
                 }
-                is Resource.Error -> DataState.OUTDATED
+                is Resource.Error -> {
+                    errorMessage = resource.message
+                    DataState.OUTDATED
+                }
             }
         }
     }
