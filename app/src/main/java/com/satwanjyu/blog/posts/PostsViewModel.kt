@@ -3,9 +3,10 @@ package com.satwanjyu.blog.posts
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.satwanjyu.blog.posts.data.Data
 import com.satwanjyu.blog.posts.data.Post
 import com.satwanjyu.blog.posts.ui.PostsUiState
+import com.satwanjyu.blog.shared.data.CachedLiveRepository
+import com.satwanjyu.blog.shared.data.Data
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -15,7 +16,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PostsViewModel @Inject constructor(
-    private val postRepository: PostRepository
+    private val postRepository: CachedLiveRepository<Post>
 ) : ViewModel() {
 
     val draft = mutableStateOf("")
@@ -36,11 +37,11 @@ class PostsViewModel @Inject constructor(
 
     private suspend fun updatePosts() {
         _uiState.value = PostsUiState.Loading(posts)
-        postRepository.updatePosts()
+        postRepository.cachePosts()
     }
 
     private suspend fun getPosts() {
-        postRepository.getPosts().collect { data ->
+        postRepository.read().collect { data ->
             when (data) {
                 is Data.Live ->
                     _uiState.value = PostsUiState.Success(data.data ?: emptyList())
@@ -55,9 +56,9 @@ class PostsViewModel @Inject constructor(
         }
     }
 
-    fun sendDraft(draft: String) {
+    fun sendDraft() {
         viewModelScope.launch {
-            postRepository.insertPost(draft)
+            postRepository.create(Post("0", draft.value))
         }
     }
 

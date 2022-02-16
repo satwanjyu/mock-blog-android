@@ -1,11 +1,12 @@
 package com.satwanjyu.blog.posts.di
 
-import com.satwanjyu.blog.posts.PostRepository
-import com.satwanjyu.blog.posts.data.PostLocalDataSource
-import com.satwanjyu.blog.posts.data.PostRemoteDataSource
-import com.satwanjyu.blog.posts.data.PostRepositoryImpl
+import com.satwanjyu.blog.posts.data.Post
+import com.satwanjyu.blog.posts.data.PostRepository
 import com.satwanjyu.blog.posts.data.local.room.RoomPostLocalDataSource
-import com.satwanjyu.blog.posts.data.remote.ktor.KtorPostRemoteDataSource
+import com.satwanjyu.blog.posts.data.remote.ktor.KtorRemoteDataSource
+import com.satwanjyu.blog.shared.data.CachedLiveRepository
+import com.satwanjyu.blog.shared.data.local.LocalDataSource
+import com.satwanjyu.blog.shared.data.remote.RemoteDataSource
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -19,18 +20,18 @@ abstract class BinderModule {
     @Singleton
     @Binds
     abstract fun bindPostRemoteDataSource(
-        postRemoteDataSource: KtorPostRemoteDataSource
-    ): PostRemoteDataSource
+        postRemoteDataSource: KtorRemoteDataSource
+    ): RemoteDataSource<Post>
 
     @Singleton
     @Binds
     abstract fun bindPostLocalDataSource(
         postLocalDataSource: RoomPostLocalDataSource
-    ): PostLocalDataSource
+    ): LocalDataSource<Post>
 
     @Singleton
     @Binds
     abstract fun bindPostRepository(
-        postRepository: PostRepositoryImpl
-    ): PostRepository
+        postRepository: PostRepository
+    ): CachedLiveRepository<Post>
 }

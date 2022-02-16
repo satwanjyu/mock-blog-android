@@ -48,7 +48,7 @@ class MainActivity : ComponentActivity() {
                         uiState = uiState.value,
                         postsViewModel.draft.value,
                         { postsViewModel.updateDraft(it) },
-                        { postsViewModel.sendDraft(it) }
+                        { postsViewModel.sendDraft() }
                     )
                 }
             }

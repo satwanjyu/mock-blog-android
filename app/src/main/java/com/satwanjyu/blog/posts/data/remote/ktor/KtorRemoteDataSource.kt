@@ -1,9 +1,9 @@
 package com.satwanjyu.blog.posts.data.remote.ktor
 
 import com.satwanjyu.blog.posts.data.Post
-import com.satwanjyu.blog.posts.data.PostRemoteDataSource
 import com.satwanjyu.blog.posts.data.remote.PostDto
-import com.satwanjyu.blog.posts.data.remote.Resource
+import com.satwanjyu.blog.shared.data.remote.RemoteDataSource
+import com.satwanjyu.blog.shared.data.remote.Resource
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.request.*
@@ -13,11 +13,11 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
-class KtorPostRemoteDataSource @Inject constructor(
+class KtorRemoteDataSource @Inject constructor(
     private val client: HttpClient
-) : PostRemoteDataSource {
+) : RemoteDataSource<Post> {
 
-    override fun getPosts(): Flow<Resource<List<Post>>> {
+    override fun get(): Flow<Resource<List<Post>>> {
         return flow {
             while (true) {
                 try {
@@ -38,10 +38,10 @@ class KtorPostRemoteDataSource @Inject constructor(
         }
     }
 
-    override suspend fun postPost(content: String) {
+    override suspend fun set(data: Post) {
         client.post(BASE_URL + "posts") {
             contentType(ContentType.Application.Json)
-            setBody(PostDto(null, content))
+            setBody(PostDto(id = null, content = data.content))
         }
     }
 

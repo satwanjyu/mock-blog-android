@@ -1,4 +1,4 @@
-package com.satwanjyu.blog.posts.data
+package com.satwanjyu.blog.shared.data
 
 sealed class Data<T> {
     abstract val data: T?

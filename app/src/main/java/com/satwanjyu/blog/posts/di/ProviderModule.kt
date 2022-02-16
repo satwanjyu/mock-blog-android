@@ -3,7 +3,7 @@ package com.satwanjyu.blog.posts.di
 import android.content.Context
 import androidx.room.Room
 import com.satwanjyu.blog.posts.data.local.room.PostDao
-import com.satwanjyu.blog.posts.data.local.room.PostDb
+import com.satwanjyu.blog.shared.data.local.room.BlogDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -17,18 +17,18 @@ object ProviderModule {
 
     @Singleton
     @Provides
-    fun providePostDatabase(@ApplicationContext context: Context): PostDb {
+    fun providePostDatabase(@ApplicationContext context: Context): BlogDatabase {
         return Room.databaseBuilder(
             context,
-            PostDb::class.java,
+            BlogDatabase::class.java,
             "post-database"
         ).build()
     }
 
     @Singleton
     @Provides
-    fun providePostDao(postDb: PostDb): PostDao {
-        return postDb.postDao()
+    fun providePostDao(blogDatabase: BlogDatabase): PostDao {
+        return blogDatabase.postDao()
     }
 
 }

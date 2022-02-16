@@ -1,4 +1,4 @@
-package com.satwanjyu.blog.posts.data.remote
+package com.satwanjyu.blog.shared.data.remote
 
 sealed class Resource<T> {
     class Loading<T> : Resource<T>()
