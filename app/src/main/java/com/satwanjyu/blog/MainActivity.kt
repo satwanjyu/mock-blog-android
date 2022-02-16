@@ -12,8 +12,8 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import com.satwanjyu.blog.posts.MainScreenViewModel
-import com.satwanjyu.blog.posts.ui.MainScreenUiState
+import com.satwanjyu.blog.posts.PostsViewModel
+import com.satwanjyu.blog.posts.ui.PostsUiState
 import com.satwanjyu.blog.shared.ui.theme.BlogandroidTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
@@ -22,16 +22,16 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
-    private val mainScreenViewModel: MainScreenViewModel by viewModels()
+    private val postsViewModel: PostsViewModel by viewModels()
 
-    private val uiState = mutableStateOf<MainScreenUiState>(MainScreenUiState.Success())
+    private val uiState = mutableStateOf<PostsUiState>(PostsUiState.Success())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                mainScreenViewModel.uiState.collect {
+                postsViewModel.uiState.collect {
                     uiState.value = it
                 }
             }
@@ -46,9 +46,9 @@ class MainActivity : ComponentActivity() {
                 ) {
                     BlogScaffold(
                         uiState = uiState.value,
-                        mainScreenViewModel.draft.value,
-                        { mainScreenViewModel.updateDraft(it) },
-                        { mainScreenViewModel.sendDraft(it) }
+                        postsViewModel.draft.value,
+                        { postsViewModel.updateDraft(it) },
+                        { postsViewModel.sendDraft(it) }
                     )
                 }
             }

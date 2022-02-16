@@ -6,11 +6,11 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.satwanjyu.blog.posts.ComposePost
 import com.satwanjyu.blog.posts.Posts
-import com.satwanjyu.blog.posts.ui.MainScreenUiState
+import com.satwanjyu.blog.posts.ui.PostsUiState
 
 @Composable
 fun BlogScaffold(
-    uiState: MainScreenUiState,
+    uiState: PostsUiState,
     draft: String,
     updateDraft: (String) -> Unit,
     sendDraft: (String) -> Unit
